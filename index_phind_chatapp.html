@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase_version9_RealtimeDB(G'sACADEMY初学者用サンプル)</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <h1>チャットアプリ</h1>
+    <!-- コンテンツ表示画面 -->
+    <div>
+        <!-- 各場所にidを設定しましょう -->
+        <button id="google-signin">Sign in with Google</button>
+        <div>
+            <input id="uname" type="text" placeholder="名前を入力してください">
+        </div>
+        <div>
+            <textarea id="text" placeholder="文章を入力してください"></textarea>
+        </div>
+        <button id="send">送信</button>
+        <!-- style.cssに "overflow: auto;"を書いてsみましょう！※最後に -->
+        <div id="output"></div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
+        
+        const auth = getAuth();
+        const provider = new GoogleAuthProvider();
+        
+        signInWithPopup(auth, provider)
+          .then((result) => {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            // The signed-in user info.
+            const user = result.user;
+            // ...
+          }).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            // ...
+          });
+
+          document.getElementById('google-signin').addEventListener('click', () => {
+            // Start sign-in with Google
+            signInWithPopup(auth, provider)
+              .then((result) => {
+                // Handle sign-in result here
+              })
+              .catch((error) => {
+                // Handle sign-in error here
+              });
+          });
+          
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+        import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved }
+            from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+        // Your web app's Firebase configuration
+        // githubあげるためにAPIkeyを削除してある
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app); //RealtimeDBに接続
+        const dbRef = ref(db, "chat"); //RealtimeDB内の"chat"を使う
+
+        //データ登録(Click)
+        $('#send').on('click', function () {
+            const uname = $('#uname').val();
+            const text = $('#text').val();
+
+            // まずはコンソールで入力された文字が取得できるかチェック
+            console.log(uname, 'unameの文字')
+            console.log(text, 'textの文字')
+
+            // 入力された文字が確認できたあとは
+            // firebaseにデータを送るコードを記述する
+
+            const msg = {
+                // 実際の場合は、鍵の名前は同じにする
+                uname: uname,
+                text: text,
+            }
+
+            // 送信を押したら入力された文字を消すには？？
+            $('#uname').val("")
+            $('#text').val("");
+
+            // firebseにデータを送る処理
+            // pushはfirebaseが用意したおまじない
+            const newPostRef = push(dbRef);
+            // setはfirebaseが用意したおまじない
+            set(newPostRef, msg);
+
+
+
+            // この下は消さない
+
+
+        })
+
+        //データ登録(Enter)
+
+        //最初にデータ取得＆onSnapshotでリアルタイムにデータを取得
+        onChildAdded(dbRef, function(data) {
+            const msg = data.val();
+            const key = data.key;
+
+
+            // ここのタグはシュートカットできない
+            let html = `
+                <div class=${key}>
+                    <p>${msg.uname}</p>
+                    <p>${msg.text}</p>
+                </div>
+            `
+            // 画面に表示するために埋め込みます
+            $('#output').append(html)
+        })
+
+    </script>
+</body>
+
+</html>
