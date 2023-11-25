@@ -5,18 +5,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase_RealtimeDB(ChatApp)</title>
+    <title>Firebase_version9_RealtimeDB(G'sACADEMY初学者用サンプル)</title>
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <h1>チャットアプリ</h1>
+    <h1>お文具とちゃっとするあぷり</h1>
     <!-- コンテンツ表示画面 -->
     <div>
         <!-- 各場所にidを設定しましょう -->
-        <button id="google-signin">Sign in with Google</button>
         <div>
             <input id="uname" type="text" placeholder="名前を入力してください">
         </div>
@@ -24,54 +23,19 @@
             <textarea id="text" placeholder="文章を入力してください"></textarea>
         </div>
         <button id="send">送信</button>
-        <!-- style.cssに "overflow: auto;"を書いてみましょう！※最後に -->
+        <!-- style.cssに "overflow: auto;"を書いてsみましょう！※最後に -->
         <div id="output"></div>
     </div>
+    
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="module">
         // Import the functions you need from the SDKs you need
-        import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
-        
-        const auth = getAuth();
-        const provider = new GoogleAuthProvider();
-        
-        signInWithPopup(auth, provider)
-          .then((result) => {
-            // This gives you a Google Access Token. You can use it to access the Google API.
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential.accessToken;
-            // The signed-in user info.
-            const user = result.user;
-            // ...
-          }).catch((error) => {
-            // Handle Errors here.
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // The email of the user's account used.
-            const email = error.email;
-            // The AuthCredential type that was used.
-            const credential = GoogleAuthProvider.credentialFromError(error);
-            // ...
-          });
-
-          document.getElementById('google-signin').addEventListener('click', () => {
-            // Start sign-in with Google
-            signInWithPopup(auth, provider)
-              .then((result) => {
-                // Handle sign-in result here
-              })
-              .catch((error) => {
-                // Handle sign-in error here
-              });
-          });
-          
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
         import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved }
             from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
         // Your web app's Firebase configuration
-        // githubあげるためにAPIkeyを削除してある
         
 
         const app = initializeApp(firebaseConfig);
@@ -91,7 +55,7 @@
             // firebaseにデータを送るコードを記述する
 
             const msg = {
-                // 実際の場合は、送るときに鍵の名前は同じにする 左が鍵、右がデータ
+                // 実際の場合は、鍵の名前は同じにする
                 uname: uname,
                 text: text,
             }
@@ -101,7 +65,7 @@
             $('#text').val("");
 
             // firebseにデータを送る処理
-            // pushはfirebaseが用意したおまじない
+            // pushはfirebaseが用意したおまじない（注意）
             const newPostRef = push(dbRef);
             // setはfirebaseが用意したおまじない
             set(newPostRef, msg);
@@ -121,7 +85,7 @@
             const key = data.key;
 
 
-            // ここのタグはショートカットできない
+            // ここのタグはシュートカットできない
             let html = `
                 <div class=${key}>
                     <p>${msg.uname}</p>

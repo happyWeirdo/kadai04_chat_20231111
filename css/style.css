@@ -2,24 +2,34 @@
   box-sizing: border-box;
 }
 
+body {
+  background-image: url("/obungu_kotatsu.jpeg");
+  
+}
+
 h1 {
   text-align: center;
   margin: 50px 0;
-  font-size: 20px;
+  font-size: 50px;
+  color: #f07f15;
 }
 
 input {
   width: 500px;
   padding: 10px;
   display: block;
-  margin: 0 auto 50px;
+  margin: 0 200px 50px;
+  border-color: #f07f15;
+  border-radius: 8px;
 }
 
 textarea {
   width: 500px;
   height: 200px;
   padding: 10px;
-  margin: 0 auto 50px;
+  margin: 0 200px 50px;
+  border-color: #f07f15;
+  border-radius: 8px;
   display: block;
   resize: none;
 }
@@ -27,17 +37,51 @@ textarea {
 button {
   width: 200px;
   height: 50px;
-  margin: 0 auto 50px;
+  margin: 0 350px 50px;
   display: block;
+  background: #e2976b;
+  border-radius: 8px;
+  border-color: #e2976b;
+  color: white;
   font-size: 16px;
 }
 
 #output {
-  width: 500px;
+  width: 600px;
   display: block;
-  height: 500px;
+  height: 600px;
   border: 1px solid #ccc;
-  margin: 0 auto;
+  /* margin: 0 auto 100px; */
   border-radius: 8px;
   padding: 10px;
+  overflow: scroll;
+}
+
+div#output {
+  margin: 0 150px 100px;
+  background-image: url("/nekosan.jpeg");
+}
+
+div#output
+div:nth-child(odd) {
+  background: #f1a2a2;;
+  padding: 10px;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-top: 10px;
+  width: fit-content;
+}
+
+div#output
+div:nth-child(even) {
+  background: #f3f3b8;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  width: fit-content;
+}
+
+nekosan.jpeg {
+  width: 600px;
+  height: 600px;
 }
